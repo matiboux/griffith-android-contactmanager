@@ -14,6 +14,7 @@ import android.widget.Toast;
 public class AddContact extends AppCompatActivity {
 
     DBOpenHelper db;
+    ContactInfo contactInfo;
 
     EditText inputFirstname;
     EditText inputLastname;
@@ -39,9 +40,17 @@ public class AddContact extends AppCompatActivity {
 
         // Get contact id
         int contactId = getIntent().getIntExtra("contactId", -1);
-        ContactInfo contactInfo = ContactInfo.getById(db, "test", contactId);
+        contactInfo = ContactInfo.getById(db, "test", contactId);
 
-        String actionBarTitle = contactInfo != null ? "Edit " + contactInfo.getFullName() : "Add a new Contact";
+        // Set information
+        String actionBarTitle;
+        if (contactInfo != null) {
+            actionBarTitle = "Edit " + contactInfo.getFullName();
+            inputFirstname.setText(contactInfo.firstname);
+            inputLastname.setText(contactInfo.lastname);
+            inputPhone.setText(contactInfo.phone);
+            inputEmail.setText(contactInfo.email);
+        } else actionBarTitle = "Add a new Contact";
 
         // Action Bar attributes
         if (actionBar != null) {
@@ -59,13 +68,22 @@ public class AddContact extends AppCompatActivity {
                 String phone = inputPhone.getText().toString();
                 String email = inputEmail.getText().toString();
 
-                if (insertDB(lastname, firstname, phone, email)) {
-                    Toast.makeText(AddContact.this, "Contact added succesfully!", Toast.LENGTH_SHORT).show();
+                if (contactInfo != null)
+                    if (updateDB(contactInfo.id, lastname, firstname, phone, email)) {
+                        Toast.makeText(AddContact.this, "Contact succesfully updated!", Toast.LENGTH_SHORT).show();
+                        setResult(RESULT_OK);
+                        finish(); // Finish
+                        return;
+                    }
+                else if (insertDB(lastname, firstname, phone, email)) {
+                    Toast.makeText(AddContact.this, "Contact succesfully added!", Toast.LENGTH_SHORT).show();
                     setResult(RESULT_OK);
                     finish(); // Finish
-                } else {
-                    Toast.makeText(AddContact.this, "An error occurred", Toast.LENGTH_SHORT).show();
+                    return;
                 }
+
+                // Else,
+                Toast.makeText(AddContact.this, "An error occurred", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -88,6 +106,15 @@ public class AddContact extends AppCompatActivity {
         cv.put("phone", phone);
         cv.put("email", email);
         return db.sdb.insert("test", null, cv) >= 0;
+    }
+
+    private boolean updateDB(int id, String lastname, String firstname, String phone, String email) {
+        ContentValues cv = new ContentValues();
+        cv.put("lastname", lastname);
+        cv.put("firstname", firstname);
+        cv.put("phone", phone);
+        cv.put("email", email);
+        return db.sdb.update("test", cv, "id = ?", new String[]{String.valueOf(id)}) >= 0;
     }
 
 }
