@@ -54,7 +54,12 @@ public class ListContacts extends AppCompatActivity {
         listViewContacts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Show contact
+                //ItemClicked item = parent.getItemAtPosition(position);
+
+                Intent intent = new Intent(ListContacts.this, ShowContact.class);
+                intent.putExtra("contactId", id); // ???
+                //based on item add info to intent
+                startActivity(intent);
             }
         });
 
