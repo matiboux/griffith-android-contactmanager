@@ -34,4 +34,5 @@
         "Project assignment at Griffith College.\n"
         "https://gcd.ie/"
     </string>
+    <string name="add_contact_submit_button">Add as a new contact</string>
 </resources>

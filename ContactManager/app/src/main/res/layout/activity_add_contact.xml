@@ -85,6 +85,6 @@
         android:id="@+id/btn_submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add as a new contact" />
+        android:text="@string/add_contact_submit_button" />
 
 </LinearLayout>

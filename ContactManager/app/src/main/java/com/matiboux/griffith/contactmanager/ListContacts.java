@@ -54,11 +54,10 @@ public class ListContacts extends AppCompatActivity {
         listViewContacts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //ItemClicked item = parent.getItemAtPosition(position);
+                ContactInfo contactInfo = (ContactInfo) parent.getItemAtPosition(position);
 
                 Intent intent = new Intent(ListContacts.this, ShowContact.class);
-                intent.putExtra("contactId", id); // ???
-                //based on item add info to intent
+                intent.putExtra("contactId", contactInfo.id); // Pass the contact id
                 startActivity(intent);
             }
         });
@@ -88,17 +87,23 @@ public class ListContacts extends AppCompatActivity {
         String order_by = null;
         Cursor c = db.sdb.query(table, columns, where, where_args, group_by, having, order_by);
 
-        ArrayList<String> arrayContacts = new ArrayList<>();
+        ArrayList<ContactInfo> arrayContacts = new ArrayList<>();
 
         c.moveToFirst();
         for (int i = 0; i < c.getCount(); i++) {
-            arrayContacts.add(c.getString(2) + " " + c.getString(1));
+            arrayContacts.add(new ContactInfo(
+                    c.getInt(0),
+                    c.getString(1),
+                    c.getString(2),
+                    c.getString(3),
+                    c.getString(4)));
             c.moveToNext();
         }
 
-        ArrayAdapter<String> adapterContacts = new ArrayAdapter<>(this, R.layout.adapter_list_contacts, R.id.txv_list_contacts, arrayContacts);
-
+        ListContactsAdapter adapterContacts = new ListContactsAdapter(this, arrayContacts);
         listViewContacts.setAdapter(adapterContacts);
+
+        c.close();
     }
 
     @Override
