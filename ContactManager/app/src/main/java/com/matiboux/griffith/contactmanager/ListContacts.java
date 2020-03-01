@@ -1,5 +1,6 @@
 package com.matiboux.griffith.contactmanager;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 
@@ -116,6 +117,7 @@ public class ListContacts extends AppCompatActivity {
 
             case R.id.action_settings:
                 // Move to Settings Activity
+                startActivity(new Intent(this, SettingsActivity.class));
                 return true;
 
             case R.id.action_about:
