@@ -12,8 +12,14 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 public class ShowContact extends AppCompatActivity {
+
+    DBOpenHelper db;
+    ContactInfo contactInfo;
+
+    TextView txv_contact_info;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,12 +32,20 @@ public class ShowContact extends AppCompatActivity {
         CollapsingToolbarLayout toolBarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
         //toolBarLayout.setTitle(getTitle());
 
-        //
+        // Database
+        db = new DBOpenHelper(this, "test.db", null, 1);
+
+        // Components
+        txv_contact_info = findViewById(R.id.txv_contact_info);
+
+        // Get contact id
         int contactId = getIntent().getIntExtra("contactId", -1);
-        //if (contactId < 0) finish();
+        contactInfo = ContactInfo.getById(db, "test", contactId);
+        if (contactInfo == null) finish();
 
         // Set information
-        toolBarLayout.setTitle(String.valueOf(contactId));
+        toolBarLayout.setTitle(contactInfo.getFullName());
+        // more to do...
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -61,7 +75,9 @@ public class ShowContact extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         switch (id) {
             case R.id.action_edit:
-                // Edit contact
+                Intent intent = new Intent(this, AddContact.class);
+                intent.putExtra("contactId", contactInfo.id);
+                startActivity(intent);
                 return true;
 
             case R.id.action_delete:

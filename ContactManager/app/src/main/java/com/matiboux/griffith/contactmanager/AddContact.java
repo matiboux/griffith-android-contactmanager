@@ -26,22 +26,28 @@ public class AddContact extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_contact);
 
-        // Action Bar attributes
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle("Add a new Contact");
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+        // Database
+        db = new DBOpenHelper(this, "test.db", null, 1);
 
         // Components
+        ActionBar actionBar = getSupportActionBar();
         inputFirstname = findViewById(R.id.input_firstname);
         inputLastname = findViewById(R.id.input_lastname);
         inputPhone = findViewById(R.id.input_phone);
         inputEmail = findViewById(R.id.input_email);
         btnSubmit = findViewById(R.id.btn_submit);
 
-        // Database
-        db = new DBOpenHelper(this, "test.db", null, 1);
+        // Get contact id
+        int contactId = getIntent().getIntExtra("contactId", -1);
+        ContactInfo contactInfo = ContactInfo.getById(db, "test", contactId);
+
+        String actionBarTitle = contactInfo != null ? "Edit " + contactInfo.getFullName() : "Add a new Contact";
+
+        // Action Bar attributes
+        if (actionBar != null) {
+            actionBar.setTitle(actionBarTitle);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         // Events
         btnSubmit.setOnClickListener(new View.OnClickListener() {
@@ -53,13 +59,11 @@ public class AddContact extends AppCompatActivity {
                 String phone = inputPhone.getText().toString();
                 String email = inputEmail.getText().toString();
 
-                if(insertDB(lastname, firstname, phone, email))
-                {
+                if (insertDB(lastname, firstname, phone, email)) {
                     Toast.makeText(AddContact.this, "Contact added succesfully!", Toast.LENGTH_SHORT).show();
                     setResult(RESULT_OK);
                     finish(); // Finish
-                }
-                else {
+                } else {
                     Toast.makeText(AddContact.this, "An error occurred", Toast.LENGTH_SHORT).show();
                 }
             }
