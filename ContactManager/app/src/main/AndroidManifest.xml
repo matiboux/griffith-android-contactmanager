@@ -16,6 +16,9 @@
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" />
         <activity
+            android:name=".About"
+            android:label="@string/title_activity_about" />
+        <activity
             android:name=".ShowContact"
             android:label="@string/title_activity_show_contact"
             android:theme="@style/AppTheme.NoActionBar" />

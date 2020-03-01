@@ -129,6 +129,7 @@ public class ListContacts extends AppCompatActivity {
 
             case R.id.action_about:
                 // Move to About Activity
+                startActivity(new Intent(this, About.class));
                 return true;
         }
 

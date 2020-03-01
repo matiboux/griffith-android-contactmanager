@@ -26,4 +26,12 @@
     <string name="input_label_lastname">Last name:</string>
     <string name="input_label_firstname">First name:</string>
     <string name="input_label_email">Email:</string>
+    <string name="title_activity_about">About</string>
+    <string name="about_text">
+        "ContactManager app by Matiboux.\n"
+        "http://matiboux.me/\n\n"
+
+        "Project assignment at Griffith College.\n"
+        "https://gcd.ie/"
+    </string>
 </resources>
