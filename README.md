@@ -15,8 +15,8 @@ _Not yet available._
 - Generate layouts and activities for:
   - [x] displaying the list of contacts.
   - [x] adding a contact.
-  - [x] editing a contact.
-  - [x] deleting a contact entry.
+  - [ ] editing a contact.
+  - [ ] deleting a contact entry.
 - Your application should contain multiple activities.
   - [x] Provide for navigation from one activity to the next.
   - [x] For your list of notes you should also add events to edit and delete notes.
@@ -24,7 +24,7 @@ _Not yet available._
   - [x] Implemented DBOpenHelper.
 - Complete the add contact functionality. Users should be able to:
   - [x] Save the new contact
-  - [ ] Cancel it.
+  - [x] Cancel it.
   - Note: You will fail this milestone if you do not use SQLite to store the notes.
 - Complete the edit functionality. Users should be able to:
   - [ ] Save the edited contact
