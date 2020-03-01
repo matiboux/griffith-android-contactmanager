@@ -19,4 +19,10 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="title_activity_add_contact">AddContact</string>
+    <string name="add_contact_title">Add a contact</string>
+    <string name="input_label_phone">Phone number:</string>
+    <string name="input_label_lastname">Last name:</string>
+    <string name="input_label_firstname">First name:</string>
+    <string name="input_label_email">Email:</string>
 </resources>

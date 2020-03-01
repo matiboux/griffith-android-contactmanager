@@ -47,6 +47,7 @@ public class ListContacts extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Add contact
+                startActivityForResult(new Intent(ListContacts.this, AddContact.class), 1);
             }
         });
 
@@ -113,6 +114,7 @@ public class ListContacts extends AppCompatActivity {
         switch (id) {
             case R.id.action_add_contact:
                 // Move to Add contact Activity
+                startActivityForResult(new Intent(this, AddContact.class), 1);
                 return true;
 
             case R.id.action_settings:
@@ -126,5 +128,16 @@ public class ListContacts extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == 1)
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK)
+                reloadListContacts();
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
