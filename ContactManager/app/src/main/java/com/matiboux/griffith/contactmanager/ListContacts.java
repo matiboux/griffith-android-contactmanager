@@ -58,7 +58,7 @@ public class ListContacts extends AppCompatActivity {
 
                 Intent intent = new Intent(ListContacts.this, ShowContact.class);
                 intent.putExtra("contactId", contactInfo.id); // Pass the contact id
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
 

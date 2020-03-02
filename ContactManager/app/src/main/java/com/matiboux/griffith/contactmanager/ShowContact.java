@@ -17,8 +17,11 @@ import android.widget.TextView;
 public class ShowContact extends AppCompatActivity {
 
     DBOpenHelper db;
+
+    int contactId;
     ContactInfo contactInfo;
 
+    CollapsingToolbarLayout toolBarLayout;
     TextView txv_contact_info;
 
     @Override
@@ -27,10 +30,9 @@ public class ShowContact extends AppCompatActivity {
         setContentView(R.layout.activity_show_contact);
 
         // Toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        CollapsingToolbarLayout toolBarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
-        //toolBarLayout.setTitle(getTitle());
+        toolBarLayout = findViewById(R.id.toolbar_layout);
 
         // Database
         db = new DBOpenHelper(this, "test.db", null, 1);
@@ -39,21 +41,18 @@ public class ShowContact extends AppCompatActivity {
         txv_contact_info = findViewById(R.id.txv_contact_info);
 
         // Get contact id
-        int contactId = getIntent().getIntExtra("contactId", -1);
-        contactInfo = ContactInfo.getById(db, "test", contactId);
-        if (contactInfo == null) finish();
+        contactId = getIntent().getIntExtra("contactId", -1);
+        reloadContactInfo();
 
-        // Set information
-        toolBarLayout.setTitle(contactInfo.getFullName());
-        // more to do...
-
+        // Events
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
-                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                //        .setAction("Action", null).show();
+                // Edit contact
+                Intent intent = new Intent(ShowContact.this, AddContact.class);
+                intent.putExtra("contactId", contactInfo.id);
+                startActivityForResult(intent, 1);
             }
         });
     }
@@ -75,9 +74,10 @@ public class ShowContact extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         switch (id) {
             case R.id.action_edit:
+                // Edit contact
                 Intent intent = new Intent(this, AddContact.class);
                 intent.putExtra("contactId", contactInfo.id);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
                 return true;
 
             case R.id.action_delete:
@@ -86,5 +86,27 @@ public class ShowContact extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == 1)
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                setResult(RESULT_OK);
+                reloadContactInfo();
+            }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void reloadContactInfo() {
+        contactInfo = ContactInfo.getById(db, "test", contactId);
+        if (contactInfo == null) finish();
+
+        // Set information
+        toolBarLayout.setTitle(contactInfo.getFullName());
+        // more to do...
     }
 }
