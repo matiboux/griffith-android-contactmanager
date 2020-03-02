@@ -66,16 +66,6 @@ public class ListContacts extends AppCompatActivity {
         reloadListContacts();
     }
 
-    @Override
-    protected void onDestroy() {
-        String table = "test";
-        String where = null;
-        String[] where_args = null;
-        db.sdb.delete(table, where, where_args);
-
-        super.onDestroy();
-    }
-
     private void reloadListContacts() {
         // Show database entries
         String table = "test";
