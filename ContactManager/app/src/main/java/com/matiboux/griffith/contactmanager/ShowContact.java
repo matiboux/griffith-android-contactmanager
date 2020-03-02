@@ -3,6 +3,7 @@ package com.matiboux.griffith.contactmanager;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -14,8 +15,11 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class ShowContact extends AppCompatActivity {
 
@@ -25,7 +29,7 @@ public class ShowContact extends AppCompatActivity {
     ContactInfo contactInfo;
 
     CollapsingToolbarLayout toolbarLayout;
-    TextView txv_contact_info;
+    ListView listViewFields;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +45,7 @@ public class ShowContact extends AppCompatActivity {
         db = new DBOpenHelper(this, "test.db", null, 1);
 
         // Components
-        txv_contact_info = findViewById(R.id.txv_contact_info);
+        listViewFields = findViewById(R.id.lv_info_contact);
 
         // Get contact id
         contactId = getIntent().getIntExtra("contactId", -1);
@@ -129,10 +133,13 @@ public class ShowContact extends AppCompatActivity {
 
         // Set information
         toolbarLayout.setTitle(contactInfo.getFullName());
-        txv_contact_info.setText(
-                "First name: " + contactInfo.firstname + "\n" +
-                "Last name: " + contactInfo.lastname + "\n" +
-                "Phone: " + contactInfo.phone + "\n" +
-                "Email: " + contactInfo.email);
+
+        ArrayList<FieldInfo> arrayFields = new ArrayList<>();
+        arrayFields.add(new FieldInfo("First name", contactInfo.firstname));
+        arrayFields.add(new FieldInfo("Last name", contactInfo.lastname));
+        arrayFields.add(new FieldInfo("Phone", contactInfo.phone));
+        arrayFields.add(new FieldInfo("Email", contactInfo.email));
+        ShowContactAdapter adapterFields = new ShowContactAdapter(this, arrayFields);
+        listViewFields.setAdapter(adapterFields);
     }
 }
