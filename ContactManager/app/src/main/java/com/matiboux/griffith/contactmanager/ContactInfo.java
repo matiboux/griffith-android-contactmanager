@@ -46,5 +46,9 @@ public class ContactInfo {
         c.close();
         return contactInfo;
     }
+
+    public static boolean deleteById(DBOpenHelper db, String table, int id) {
+        return db.sdb.delete(table, "id = ?", new String[]{String.valueOf(id)}) > 0;
+    }
 }
 

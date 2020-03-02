@@ -1,5 +1,7 @@
 package com.matiboux.griffith.contactmanager;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -13,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ShowContact extends AppCompatActivity {
 
@@ -21,7 +24,7 @@ public class ShowContact extends AppCompatActivity {
     int contactId;
     ContactInfo contactInfo;
 
-    CollapsingToolbarLayout toolBarLayout;
+    CollapsingToolbarLayout toolbarLayout;
     TextView txv_contact_info;
 
     @Override
@@ -32,7 +35,7 @@ public class ShowContact extends AppCompatActivity {
         // Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolBarLayout = findViewById(R.id.toolbar_layout);
+        toolbarLayout = findViewById(R.id.toolbar_layout);
 
         // Database
         db = new DBOpenHelper(this, "test.db", null, 1);
@@ -82,6 +85,25 @@ public class ShowContact extends AppCompatActivity {
 
             case R.id.action_delete:
                 // Delete contact
+                new AlertDialog.Builder(this)
+                        .setTitle("Delete " + contactInfo.getFullName() + "?")
+                        .setMessage(
+                                "Do you really want to delete this contact?\n" +
+                                        "This cannot be undone.")
+                        .setIcon(android.R.drawable.ic_delete)
+                        .setPositiveButton(android.R.string.yes,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        Toast toast = Toast.makeText(ShowContact.this, null, Toast.LENGTH_SHORT);
+                                        if (ContactInfo.deleteById(db, "test", contactId)) {
+                                            toast.setText("Contact sucessfully deleted.");
+                                            setResult(RESULT_OK);
+                                            finish(); // Quit activity
+                                        } else toast.setText("An error occurred.");
+                                        toast.show();
+                                    }
+                                })
+                        .setNegativeButton(android.R.string.no, null).show();
                 return true;
         }
 
@@ -106,7 +128,7 @@ public class ShowContact extends AppCompatActivity {
         if (contactInfo == null) finish();
 
         // Set information
-        toolBarLayout.setTitle(contactInfo.getFullName());
+        toolbarLayout.setTitle(contactInfo.getFullName());
         // more to do...
     }
 }
