@@ -129,6 +129,10 @@ public class ShowContact extends AppCompatActivity {
 
         // Set information
         toolbarLayout.setTitle(contactInfo.getFullName());
-        // more to do...
+        txv_contact_info.setText(
+                "First name: " + contactInfo.firstname + "\n" +
+                "Last name: " + contactInfo.lastname + "\n" +
+                "Phone: " + contactInfo.phone + "\n" +
+                "Email: " + contactInfo.email);
     }
 }
