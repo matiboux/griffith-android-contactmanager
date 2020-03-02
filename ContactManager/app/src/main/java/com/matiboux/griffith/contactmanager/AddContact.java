@@ -68,14 +68,14 @@ public class AddContact extends AppCompatActivity {
                 String phone = inputPhone.getText().toString();
                 String email = inputEmail.getText().toString();
 
-                if (contactInfo != null)
+                if (contactInfo != null) {
                     if (updateDB(contactInfo.id, lastname, firstname, phone, email)) {
                         Toast.makeText(AddContact.this, "Contact succesfully updated!", Toast.LENGTH_SHORT).show();
                         setResult(RESULT_OK);
                         finish(); // Finish
                         return;
                     }
-                else if (insertDB(lastname, firstname, phone, email)) {
+                } else if (insertDB(lastname, firstname, phone, email)) {
                     Toast.makeText(AddContact.this, "Contact succesfully added!", Toast.LENGTH_SHORT).show();
                     setResult(RESULT_OK);
                     finish(); // Finish
