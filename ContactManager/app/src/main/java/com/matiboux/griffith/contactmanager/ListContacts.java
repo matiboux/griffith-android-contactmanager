@@ -3,19 +3,16 @@ package com.matiboux.griffith.contactmanager;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.view.View;
-
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -68,14 +65,10 @@ public class ListContacts extends AppCompatActivity {
 
     private void reloadListContacts() {
         // Show database entries
-        String table = "test";
-        String[] columns = new String[]{"*"};
-        String where = null;
-        String[] where_args = null;
-        String group_by = null;
-        String having = null;
-        String order_by = null;
-        Cursor c = db.sdb.query(table, columns, where, where_args, group_by, having, order_by);
+        Cursor c = db.sdb.query(
+                "test", new String[]{"*"},
+                null, null,
+                null, null, "firstname, lastname COLLATE NOCASE");
 
         ArrayList<ContactInfo> arrayContacts = new ArrayList<>();
 
