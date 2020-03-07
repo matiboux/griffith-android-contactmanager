@@ -45,12 +45,13 @@ public class AddContact extends AppCompatActivity {
         // Set information
         String actionBarTitle;
         if (contactInfo != null) {
-            actionBarTitle = "Edit " + contactInfo.getFullName();
+            actionBarTitle = getString(R.string.edit_contact_title) + ": " + contactInfo.getFullName();
             inputFirstname.setText(contactInfo.firstname);
             inputLastname.setText(contactInfo.lastname);
             inputPhone.setText(contactInfo.phone);
             inputEmail.setText(contactInfo.email);
-        } else actionBarTitle = "Add a new Contact";
+            btnSubmit.setText(R.string.edit_contact_submit_button);
+        } else actionBarTitle = getString(R.string.add_contact_title);
 
         // Action Bar attributes
         if (actionBar != null) {
