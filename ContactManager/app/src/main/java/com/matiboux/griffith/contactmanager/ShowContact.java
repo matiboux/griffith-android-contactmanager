@@ -1,6 +1,7 @@
 package com.matiboux.griffith.contactmanager;
 
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -12,9 +13,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.text.Editable;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,6 +67,41 @@ public class ShowContact extends AppCompatActivity {
                 startActivityForResult(intent, 1);
             }
         });
+        listViewFields.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final FieldInfo fieldInfo = (FieldInfo) parent.getItemAtPosition(position);
+
+                final EditText input = new EditText(ShowContact.this);
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                input.setText(fieldInfo.value);
+
+                new AlertDialog.Builder(ShowContact.this)
+                        .setTitle("Edit \"" + fieldInfo.name + "\"")
+                        .setView(input)
+                        .setMessage("Update the value for this value if you'd like to change it.")
+                        .setIcon(android.R.drawable.ic_menu_edit)
+                        .setPositiveButton(android.R.string.yes,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        Toast toast = Toast.makeText(ShowContact.this, null, Toast.LENGTH_SHORT);
+                                        if (updateDB(contactInfo.id, fieldInfo.field, input.getText().toString())) {
+                                            toast.setText("Field successfully updated.");
+                                            setResult(RESULT_OK);
+                                            reloadContactInfo();
+                                        } else toast.setText("An error occurred.");
+                                        toast.show();
+                                    }
+                                })
+                        .setNegativeButton(android.R.string.no, null).show();
+            }
+        });
+    }
+
+    private boolean updateDB(int id, String field, String value) {
+        ContentValues cv = new ContentValues();
+        cv.put(field, value);
+        return db.sdb.update("test", cv, "id = ?", new String[]{String.valueOf(id)}) >= 0;
     }
 
     @Override
@@ -100,9 +140,10 @@ public class ShowContact extends AppCompatActivity {
                                     public void onClick(DialogInterface dialog, int whichButton) {
                                         Toast toast = Toast.makeText(ShowContact.this, null, Toast.LENGTH_SHORT);
                                         if (ContactInfo.deleteById(db, "test", contactId)) {
-                                            toast.setText("Contact sucessfully deleted.");
+                                            toast.setText("Contact successfully deleted.");
                                             setResult(RESULT_OK);
                                             finish(); // Quit activity
+                                            return;
                                         } else toast.setText("An error occurred.");
                                         toast.show();
                                     }
@@ -135,10 +176,10 @@ public class ShowContact extends AppCompatActivity {
         toolbarLayout.setTitle(contactInfo.getFullName());
 
         ArrayList<FieldInfo> arrayFields = new ArrayList<>();
-        arrayFields.add(new FieldInfo("First name", contactInfo.firstname));
-        arrayFields.add(new FieldInfo("Last name", contactInfo.lastname));
-        arrayFields.add(new FieldInfo("Phone", contactInfo.phone));
-        arrayFields.add(new FieldInfo("Email", contactInfo.email));
+        arrayFields.add(new FieldInfo("firstname", "First name", contactInfo.firstname));
+        arrayFields.add(new FieldInfo("lastname", "Last name", contactInfo.lastname));
+        arrayFields.add(new FieldInfo("phone", "Phone", contactInfo.phone));
+        arrayFields.add(new FieldInfo("email", "Email", contactInfo.email));
         ShowContactAdapter adapterFields = new ShowContactAdapter(this, arrayFields);
         listViewFields.setAdapter(adapterFields);
     }

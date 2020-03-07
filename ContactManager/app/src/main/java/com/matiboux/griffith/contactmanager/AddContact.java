@@ -70,13 +70,13 @@ public class AddContact extends AppCompatActivity {
 
                 if (contactInfo != null) {
                     if (updateDB(contactInfo.id, lastname, firstname, phone, email)) {
-                        Toast.makeText(AddContact.this, "Contact succesfully updated!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddContact.this, "Contact successfully updated!", Toast.LENGTH_SHORT).show();
                         setResult(RESULT_OK);
                         finish(); // Finish
                         return;
                     }
                 } else if (insertDB(lastname, firstname, phone, email)) {
-                    Toast.makeText(AddContact.this, "Contact succesfully added!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddContact.this, "Contact successfully added!", Toast.LENGTH_SHORT).show();
                     setResult(RESULT_OK);
                     finish(); // Finish
                     return;
