@@ -1,6 +1,5 @@
 package com.matiboux.griffith.contactmanager;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -15,12 +14,12 @@ public class DBOpenHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL(ContactInfo.CREATE_TABLE);
+    public void onCreate(SQLiteDatabase sdb) {
+        sdb.execSQL(ContactInfo.CREATE_TABLE);
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(ContactInfo.UPGRADE_TABLE);
+    public void onUpgrade(SQLiteDatabase sdb, int oldVersion, int newVersion) {
+        sdb.execSQL(ContactInfo.UPGRADE_TABLE);
     }
 }

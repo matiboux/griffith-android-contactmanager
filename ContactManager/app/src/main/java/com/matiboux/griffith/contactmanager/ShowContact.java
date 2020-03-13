@@ -4,23 +4,8 @@ import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-
-import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import android.text.Editable;
 import android.text.InputType;
-import android.text.TextUtils;
-import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,8 +14,14 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -38,7 +29,7 @@ public class ShowContact extends AppCompatActivity {
 
     private DBOpenHelper db;
 
-    int contactId;
+    long contactId;
     private ContactInfo contactInfo;
 
     private CollapsingToolbarLayout toolbarLayout;
@@ -69,7 +60,7 @@ public class ShowContact extends AppCompatActivity {
         listViewFields = findViewById(R.id.lv_info_contact);
 
         // Get contact id
-        contactId = getIntent().getIntExtra("contactId", -1);
+        contactId = getIntent().getLongExtra("contactId", -1);
         reloadContactInfo();
 
         // Set max picture height
@@ -197,16 +188,7 @@ public class ShowContact extends AppCompatActivity {
         toolbarLayout.setTitle(contactInfo.getFullName());
 
         // Set contact picture
-        if (contactInfo.picture != null) {
-            byte[] bytes = Base64.decode(contactInfo.picture, Base64.DEFAULT);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-            contactPicture.setImageBitmap(bitmap);
-        } else {
-            BitmapDrawable drawable = (BitmapDrawable) getDrawable(R.drawable.default_avatar);
-            if (drawable == null) return;
-            Bitmap bitmap = drawable.getBitmap();
-            contactPicture.setImageBitmap(bitmap);
-        }
+        contactPicture.setImageBitmap(contactInfo.getPicture(this));
 
         // Display contact information
         ArrayList<FieldInfo> arrayFields = new ArrayList<>();
@@ -218,7 +200,7 @@ public class ShowContact extends AppCompatActivity {
         listViewFields.setAdapter(adapterFields);
     }
 
-    private boolean updateDB(int id, String field, String value) {
+    private boolean updateDB(long id, String field, String value) {
         ContentValues cv = new ContentValues();
         cv.put(field, value);
         return ContactInfo.updateById(db, cv, id);

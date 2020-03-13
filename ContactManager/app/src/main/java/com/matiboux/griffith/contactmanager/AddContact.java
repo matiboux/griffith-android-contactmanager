@@ -1,20 +1,13 @@
 package com.matiboux.griffith.contactmanager;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,7 +16,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.io.FileNotFoundException;
 
 public class AddContact extends AppCompatActivity {
@@ -60,8 +55,8 @@ public class AddContact extends AppCompatActivity {
         btnSubmit = findViewById(R.id.btn_submit);
 
         // Get contact id
-        int contactId = getIntent().getIntExtra("contactId", -1);
-        contactInfo = ContactInfo.getById(db, contactId);
+        long contactId = getIntent().getLongExtra("contactId", -1);
+        contactInfo = contactId >= 0 ? ContactInfo.getById(db, contactId) : null;
 
         // Set information
         String actionBarTitle;
@@ -70,10 +65,9 @@ public class AddContact extends AppCompatActivity {
             actionBarTitle = getString(R.string.edit_contact_title) + ": " + contactInfo.getFullName();
 
             // Set contact picture
-            if (contactInfo.picture != null) {
-                byte[] bytes = Base64.decode(contactInfo.picture, Base64.DEFAULT);
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                inputPicture.setImageBitmap(bitmap);
+            Bitmap picture = contactInfo.getPicture(this, false);
+            if (picture != null) {
+                inputPicture.setImageBitmap(picture);
                 inputPictureDefault = false;
             }
 
@@ -184,26 +178,16 @@ public class AddContact extends AppCompatActivity {
         String lastname = inputLastname.getText().toString().replaceAll("\\s+", " ").trim();
         String phone = inputPhone.getText().toString().replaceAll("\\s+", " ").trim();
         String email = inputEmail.getText().toString().replaceAll("\\s+", " ").trim();
-
-        // Get the contact picture
-        String picture = null;
-        if (!inputPictureDefault) {
-            BitmapDrawable drawable = (BitmapDrawable) inputPicture.getDrawable();
-            Bitmap bitmap = drawable.getBitmap();
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-            byte[] byteArray = byteArrayOutputStream.toByteArray();
-            picture = Base64.encodeToString(byteArray, Base64.DEFAULT);
-        }
+        Bitmap picture = !inputPictureDefault ? ((BitmapDrawable) inputPicture.getDrawable()).getBitmap() : null;
 
         if (contactInfo != null) {
-            if (updateDB(contactInfo.id, lastname, firstname, phone, email, picture)) {
+            if (updateContact(contactInfo.id, lastname, firstname, phone, email, picture)) {
                 Toast.makeText(AddContact.this, "Contact successfully updated!", Toast.LENGTH_SHORT).show();
                 setResult(RESULT_OK);
                 finish(); // Finish
                 return;
             }
-        } else if (insertDB(lastname, firstname, phone, email, picture)) {
+        } else if (insertContact(lastname, firstname, phone, email, picture)) {
             Toast.makeText(AddContact.this, "Contact successfully added!", Toast.LENGTH_SHORT).show();
             setResult(RESULT_OK);
             finish(); // Finish
@@ -214,23 +198,24 @@ public class AddContact extends AppCompatActivity {
         Toast.makeText(this, "An error occurred", Toast.LENGTH_SHORT).show();
     }
 
-    private boolean insertDB(String lastname, String firstname, String phone, String email, String picture) {
+    private boolean insertContact(String lastname, String firstname, String phone, String email, Bitmap picture) {
         ContentValues cv = new ContentValues();
         cv.put("lastname", lastname);
         cv.put("firstname", firstname);
         cv.put("phone", phone);
         cv.put("email", email);
-        cv.put("picture", picture);
+        cv.put("picture", BitmapHelper.encodeBitmap(picture));
         return ContactInfo.insert(db, cv);
     }
 
-    private boolean updateDB(int id, String lastname, String firstname, String phone, String email, String picture) {
+    private boolean updateContact(long id, String lastname, String firstname, String phone, String email, Bitmap picture) {
         ContentValues cv = new ContentValues();
         cv.put("lastname", lastname);
         cv.put("firstname", firstname);
         cv.put("phone", phone);
         cv.put("email", email);
-        cv.put("picture", picture);
+        cv.put("email", email);
+        cv.put("picture", BitmapHelper.encodeBitmap(picture));
         return ContactInfo.updateById(db, cv, id);
     }
 }

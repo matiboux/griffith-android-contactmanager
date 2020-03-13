@@ -1,27 +1,17 @@
 package com.matiboux.griffith.contactmanager;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.media.Image;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.material.snackbar.Snackbar;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class ListContactsAdapter extends ArrayAdapter<ContactInfo> implements View.OnClickListener {
@@ -70,17 +60,8 @@ public class ListContactsAdapter extends ArrayAdapter<ContactInfo> implements Vi
 
         if (contactInfo != null) {
             // Set contact picture
-            if (contactInfo.picture != null) {
-                byte[] bytes = Base64.decode(contactInfo.picture, Base64.DEFAULT);
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                viewHolder.contact_picture.setImageBitmap(bitmap);
-            } else {
-                BitmapDrawable drawable = (BitmapDrawable) context.getDrawable(R.drawable.default_avatar);
-                if (drawable != null) {
-                    Bitmap bitmap = drawable.getBitmap();
-                    viewHolder.contact_picture.setImageBitmap(bitmap);
-                }
-            }
+            Bitmap picture = contactInfo.getPicture(getContext());
+            viewHolder.contact_picture.setImageBitmap(picture);
 
             // Set contact name
             viewHolder.txv_list_contacts.setText(contactInfo.getFullName());
