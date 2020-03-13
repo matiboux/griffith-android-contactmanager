@@ -13,7 +13,7 @@
             android:name=".AddContact"
             android:label="@string/title_activity_add_contact" />
         <activity
-            android:name=".SettingsActivity"
+            android:name=".Settings"
             android:label="@string/title_activity_settings" />
         <activity
             android:name=".About"

@@ -28,7 +28,7 @@ public class AddContact extends AppCompatActivity {
         setContentView(R.layout.activity_add_contact);
 
         // Database
-        db = new DBOpenHelper(this, "test.db", null, 1);
+        db = new DBOpenHelper(this, ContactInfo.DB_NAME, null, 1);
 
         // Components
         ActionBar actionBar = getSupportActionBar();
@@ -40,7 +40,7 @@ public class AddContact extends AppCompatActivity {
 
         // Get contact id
         int contactId = getIntent().getIntExtra("contactId", -1);
-        contactInfo = ContactInfo.getById(db, "test", contactId);
+        contactInfo = ContactInfo.getById(db, contactId);
 
         // Set information
         String actionBarTitle;
@@ -106,7 +106,8 @@ public class AddContact extends AppCompatActivity {
         cv.put("firstname", firstname);
         cv.put("phone", phone);
         cv.put("email", email);
-        return db.sdb.insert("test", null, cv) >= 0;
+        cv.put("picture", (String) null);
+        return ContactInfo.insert(db, cv);
     }
 
     private boolean updateDB(int id, String lastname, String firstname, String phone, String email) {
@@ -115,7 +116,7 @@ public class AddContact extends AppCompatActivity {
         cv.put("firstname", firstname);
         cv.put("phone", phone);
         cv.put("email", email);
-        return db.sdb.update("test", cv, "id = ?", new String[]{String.valueOf(id)}) >= 0;
+        cv.put("picture", (String) null);
+        return ContactInfo.updateById(db, cv, id);
     }
-
 }

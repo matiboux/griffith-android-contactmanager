@@ -14,23 +14,13 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         sdb = getWritableDatabase();
     }
 
+    @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(create_table);
+        db.execSQL(ContactInfo.CREATE_TABLE);
     }
 
+    @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Not recommended for a real application
-        // Just for testing
-        db.execSQL(drop_table);
-        db.execSQL(create_table);
+        db.execSQL(ContactInfo.UPGRADE_TABLE);
     }
-
-    private static final String create_table = "create table test(" +
-            "id integer primary key autoincrement, " +
-            "lastname string, " +
-            "firstname string, " +
-            "phone string, " +
-            "email string)";
-
-    private static final String drop_table = "drop table test";
 }

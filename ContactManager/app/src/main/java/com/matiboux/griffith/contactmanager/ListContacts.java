@@ -37,7 +37,7 @@ public class ListContacts extends AppCompatActivity {
         listViewContacts = findViewById(R.id.lv_list_contacts);
 
         // Database
-        db = new DBOpenHelper(this, "test.db", null, 1);
+        db = new DBOpenHelper(this, ContactInfo.DB_NAME, null, 1);
 
         // Events
         fab.setOnClickListener(new View.OnClickListener() {
@@ -66,7 +66,7 @@ public class ListContacts extends AppCompatActivity {
     private void reloadListContacts() {
         // Show database entries
         Cursor c = db.sdb.query(
-                "test", new String[]{"*"},
+                ContactInfo.TABLE_NAME, new String[]{"*"},
                 null, null,
                 null, null, "firstname, lastname COLLATE NOCASE");
 
@@ -112,7 +112,7 @@ public class ListContacts extends AppCompatActivity {
 
             case R.id.action_settings:
                 // Move to Settings Activity
-                startActivity(new Intent(this, SettingsActivity.class));
+                startActivity(new Intent(this, Settings.class));
                 return true;
 
             case R.id.action_about:

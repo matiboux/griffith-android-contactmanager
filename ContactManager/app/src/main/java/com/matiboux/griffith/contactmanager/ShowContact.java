@@ -5,6 +5,8 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -15,11 +17,13 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.text.Editable;
 import android.text.InputType;
+import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +38,7 @@ public class ShowContact extends AppCompatActivity {
     ContactInfo contactInfo;
 
     CollapsingToolbarLayout toolbarLayout;
+    ImageView contactPicture;
     ListView listViewFields;
 
     @Override
@@ -44,12 +49,13 @@ public class ShowContact extends AppCompatActivity {
         // Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbarLayout = findViewById(R.id.toolbar_layout);
 
         // Database
-        db = new DBOpenHelper(this, "test.db", null, 1);
+        db = new DBOpenHelper(this, ContactInfo.DB_NAME, null, 1);
 
         // Components
+        toolbarLayout = findViewById(R.id.toolbar_layout);
+        contactPicture = findViewById(R.id.contact_picture);
         listViewFields = findViewById(R.id.lv_info_contact);
 
         // Get contact id
@@ -101,7 +107,7 @@ public class ShowContact extends AppCompatActivity {
     private boolean updateDB(int id, String field, String value) {
         ContentValues cv = new ContentValues();
         cv.put(field, value);
-        return db.sdb.update("test", cv, "id = ?", new String[]{String.valueOf(id)}) >= 0;
+        return ContactInfo.updateById(db, cv, id);
     }
 
     @Override
@@ -139,7 +145,7 @@ public class ShowContact extends AppCompatActivity {
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int whichButton) {
                                         Toast toast = Toast.makeText(ShowContact.this, null, Toast.LENGTH_SHORT);
-                                        if (ContactInfo.deleteById(db, "test", contactId)) {
+                                        if (ContactInfo.deleteById(db, contactId)) {
                                             toast.setText("Contact successfully deleted.");
                                             setResult(RESULT_OK);
                                             finish(); // Quit activity
@@ -169,12 +175,19 @@ public class ShowContact extends AppCompatActivity {
     }
 
     private void reloadContactInfo() {
-        contactInfo = ContactInfo.getById(db, "test", contactId);
+        contactInfo = ContactInfo.getById(db, contactId);
         if (contactInfo == null) finish();
 
-        // Set information
+        // Set title
         toolbarLayout.setTitle(contactInfo.getFullName());
 
+        // Set contact picture
+        if(contactInfo.picture != null) {
+            byte[] bytes = Base64.decode(contactInfo.picture, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        }
+
+        // Display contact information
         ArrayList<FieldInfo> arrayFields = new ArrayList<>();
         arrayFields.add(new FieldInfo("firstname", "First name", contactInfo.firstname));
         arrayFields.add(new FieldInfo("lastname", "Last name", contactInfo.lastname));
