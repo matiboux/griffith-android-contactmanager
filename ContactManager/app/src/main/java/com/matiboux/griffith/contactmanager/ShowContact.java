@@ -21,6 +21,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -70,6 +71,11 @@ public class ShowContact extends AppCompatActivity {
         // Get contact id
         contactId = getIntent().getIntExtra("contactId", -1);
         reloadContactInfo();
+
+        // Set max picture height
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        contactPicture.setMaxHeight(Math.min(displayMetrics.widthPixels, displayMetrics.heightPixels));
 
         // Events
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
