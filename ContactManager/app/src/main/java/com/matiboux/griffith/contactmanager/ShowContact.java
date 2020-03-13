@@ -36,14 +36,14 @@ import java.util.ArrayList;
 
 public class ShowContact extends AppCompatActivity {
 
-    DBOpenHelper db;
+    private DBOpenHelper db;
 
     int contactId;
-    ContactInfo contactInfo;
+    private ContactInfo contactInfo;
 
-    CollapsingToolbarLayout toolbarLayout;
-    ImageView contactPicture;
-    ListView listViewFields;
+    private CollapsingToolbarLayout toolbarLayout;
+    private ImageView contactPicture;
+    private ListView listViewFields;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,12 +118,6 @@ public class ShowContact extends AppCompatActivity {
                         .setNegativeButton(android.R.string.no, null).show();
             }
         });
-    }
-
-    private boolean updateDB(int id, String field, String value) {
-        ContentValues cv = new ContentValues();
-        cv.put(field, value);
-        return ContactInfo.updateById(db, cv, id);
     }
 
     @Override
@@ -222,5 +216,11 @@ public class ShowContact extends AppCompatActivity {
         arrayFields.add(new FieldInfo("email", "Email", contactInfo.email));
         ShowContactAdapter adapterFields = new ShowContactAdapter(this, arrayFields);
         listViewFields.setAdapter(adapterFields);
+    }
+
+    private boolean updateDB(int id, String field, String value) {
+        ContentValues cv = new ContentValues();
+        cv.put(field, value);
+        return ContactInfo.updateById(db, cv, id);
     }
 }
