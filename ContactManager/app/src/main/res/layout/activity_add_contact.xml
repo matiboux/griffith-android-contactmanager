@@ -6,8 +6,38 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="top|center"
-    android:paddingTop="30dp"
     tools:context=".AddContact">
+
+    <ImageView
+        android:id="@+id/input_picture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxHeight="200dp"
+        android:layout_marginBottom="10dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop"
+        android:src="@drawable/default_avatar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:paddingHorizontal="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20sp"
+            android:text="@string/tap_picture_to_edit" />
+
+        <Button
+            android:id="@+id/btn_reset_picture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="4pt"
+            android:text="Reset the picture" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

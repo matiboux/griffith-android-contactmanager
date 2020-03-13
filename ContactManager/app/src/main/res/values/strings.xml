@@ -41,4 +41,5 @@
         "Project assignment at Griffith College.\n"
         "https://gcd.ie/"
     </string>
+    <string name="tap_picture_to_edit">Tap the picture to select a new one</string>
 </resources>

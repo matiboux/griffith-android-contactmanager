@@ -18,10 +18,12 @@ import java.util.ArrayList;
 
 public class ListContacts extends AppCompatActivity {
 
-    DBOpenHelper db;
+    private static final int ASK_FOR_UPDATE = 1;
 
-    FloatingActionButton fab;
-    ListView listViewContacts;
+    private DBOpenHelper db;
+
+    private FloatingActionButton fab;
+    private ListView listViewContacts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +57,7 @@ public class ListContacts extends AppCompatActivity {
 
                 Intent intent = new Intent(ListContacts.this, ShowContact.class);
                 intent.putExtra("contactId", contactInfo.id); // Pass the contact id
-                startActivityForResult(intent, 1);
+                startActivityForResult(intent, ASK_FOR_UPDATE);
             }
         });
 
@@ -127,7 +129,7 @@ public class ListContacts extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
-        if (requestCode == 1)
+        if (requestCode == ASK_FOR_UPDATE)
             // Make sure the request was successful
             if (resultCode == RESULT_OK)
                 reloadListContacts();

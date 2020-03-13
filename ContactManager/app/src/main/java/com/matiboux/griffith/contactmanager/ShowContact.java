@@ -185,6 +185,7 @@ public class ShowContact extends AppCompatActivity {
         if(contactInfo.picture != null) {
             byte[] bytes = Base64.decode(contactInfo.picture, Base64.DEFAULT);
             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            contactPicture.setImageBitmap(bitmap);
         }
 
         // Display contact information
