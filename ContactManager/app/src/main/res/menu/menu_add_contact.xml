@@ -5,7 +5,6 @@
 
     <item
         android:id="@+id/action_submit"
-        android:orderInCategory="100"
         android:icon="@drawable/ic_check_icon"
         app:iconTint="@android:color/white"
         app:showAsAction="always" />

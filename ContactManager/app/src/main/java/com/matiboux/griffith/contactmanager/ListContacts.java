@@ -106,16 +106,10 @@ public class ListContacts extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         switch (id) {
             case R.id.action_add_contact:
                 // Move to Add contact Activity
                 startActivityForResult(new Intent(this, AddContact.class), 1);
-                return true;
-
-            case R.id.action_settings:
-                // Move to Settings Activity
-                startActivity(new Intent(this, Settings.class));
                 return true;
 
             case R.id.action_about:
