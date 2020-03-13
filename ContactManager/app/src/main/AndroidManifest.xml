@@ -10,28 +10,29 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".ListContacts"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ShowContact"
+            android:label="@string/title_activity_show_contact"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".AddContact"
-            android:label="@string/title_activity_add_contact" />
+            android:label="@string/title_activity_add_contact"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Settings"
             android:label="@string/title_activity_settings" />
         <activity
             android:name=".About"
             android:label="@string/title_activity_about" />
-        <activity
-            android:name=".ShowContact"
-            android:label="@string/title_activity_show_contact"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ListContacts"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>
