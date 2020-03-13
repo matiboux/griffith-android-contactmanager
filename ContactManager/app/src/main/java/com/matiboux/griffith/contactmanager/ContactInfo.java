@@ -3,6 +3,9 @@ package com.matiboux.griffith.contactmanager;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
+
+import org.w3c.dom.Text;
 
 import java.security.InvalidParameterException;
 
@@ -29,7 +32,7 @@ public class ContactInfo {
     }
 
     public String getFullName() {
-        return firstname + " " + lastname;
+        return !TextUtils.isEmpty(lastname) ? firstname + " " + lastname : firstname;
     }
 
     // *** Static Methods

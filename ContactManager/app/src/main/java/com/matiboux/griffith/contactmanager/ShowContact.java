@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -17,6 +18,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.text.Editable;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -91,7 +93,7 @@ public class ShowContact extends AppCompatActivity {
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int whichButton) {
                                         Toast toast = Toast.makeText(ShowContact.this, null, Toast.LENGTH_SHORT);
-                                        String newvalue = input.getText().toString().replaceAll("\\s+", " ");
+                                        String newvalue = input.getText().toString().replaceAll("\\s+", " ").trim();
                                         if (updateDB(contactInfo.id, fieldInfo.field, newvalue)) {
                                             toast.setText("Field successfully updated.");
                                             setResult(RESULT_OK);
@@ -186,6 +188,12 @@ public class ShowContact extends AppCompatActivity {
         if(contactInfo.picture != null) {
             byte[] bytes = Base64.decode(contactInfo.picture, Base64.DEFAULT);
             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            contactPicture.setImageBitmap(bitmap);
+        }
+        else {
+            BitmapDrawable drawable = (BitmapDrawable) getDrawable(R.drawable.default_avatar);
+            if(drawable == null) return;
+            Bitmap bitmap = drawable.getBitmap();
             contactPicture.setImageBitmap(bitmap);
         }
 

@@ -66,7 +66,18 @@ public class AddContact extends AppCompatActivity {
         // Set information
         String actionBarTitle;
         if (contactInfo != null) {
+            // Set title
             actionBarTitle = getString(R.string.edit_contact_title) + ": " + contactInfo.getFullName();
+
+            // Set contact picture
+            if(contactInfo.picture != null) {
+                byte[] bytes = Base64.decode(contactInfo.picture, Base64.DEFAULT);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                inputPicture.setImageBitmap(bitmap);
+                inputPictureDefault = false;
+            }
+
+            // Set fields
             inputFirstname.setText(contactInfo.firstname);
             inputLastname.setText(contactInfo.lastname);
             inputPhone.setText(contactInfo.phone);
@@ -165,14 +176,14 @@ public class AddContact extends AppCompatActivity {
 
     private void actionSubmit() {
         // Get the contact information
-        String firstname = inputFirstname.getText().toString().replaceAll("\\s+", " ");
+        String firstname = inputFirstname.getText().toString().replaceAll("\\s+", " ").trim();
         if(TextUtils.isEmpty(firstname)) {
             Toast.makeText(this, "The first name must not be empty", Toast.LENGTH_SHORT).show();
             return;
         }
-        String lastname = inputLastname.getText().toString().replaceAll("\\s+", " ");
-        String phone = inputPhone.getText().toString().replaceAll("\\s+", " ");
-        String email = inputEmail.getText().toString().replaceAll("\\s+", " ");
+        String lastname = inputLastname.getText().toString().replaceAll("\\s+", " ").trim();
+        String phone = inputPhone.getText().toString().replaceAll("\\s+", " ").trim();
+        String email = inputEmail.getText().toString().replaceAll("\\s+", " ").trim();
 
         // Get the contact picture
         String picture = null;
