@@ -70,17 +70,8 @@ public class ListContactsAdapter extends ArrayAdapter<ContactInfo> implements Vi
 
         if (contactInfo != null) {
             // Set contact picture
-            if (contactInfo.picture != null) {
-                byte[] bytes = Base64.decode(contactInfo.picture, Base64.DEFAULT);
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                viewHolder.contact_picture.setImageBitmap(bitmap);
-            } else {
-                BitmapDrawable drawable = (BitmapDrawable) context.getDrawable(R.drawable.default_avatar);
-                if (drawable != null) {
-                    Bitmap bitmap = drawable.getBitmap();
-                    viewHolder.contact_picture.setImageBitmap(bitmap);
-                }
-            }
+            Bitmap picture = contactInfo.getPicture(getContext());
+            viewHolder.contact_picture.setImageBitmap(picture);
 
             // Set contact name
             viewHolder.txv_list_contacts.setText(contactInfo.getFullName());

@@ -38,7 +38,7 @@ public class ShowContact extends AppCompatActivity {
 
     private DBOpenHelper db;
 
-    int contactId;
+    long contactId;
     private ContactInfo contactInfo;
 
     private CollapsingToolbarLayout toolbarLayout;
@@ -69,7 +69,7 @@ public class ShowContact extends AppCompatActivity {
         listViewFields = findViewById(R.id.lv_info_contact);
 
         // Get contact id
-        contactId = getIntent().getIntExtra("contactId", -1);
+        contactId = getIntent().getLongExtra("contactId", -1);
         reloadContactInfo();
 
         // Set max picture height
@@ -197,16 +197,7 @@ public class ShowContact extends AppCompatActivity {
         toolbarLayout.setTitle(contactInfo.getFullName());
 
         // Set contact picture
-        if (contactInfo.picture != null) {
-            byte[] bytes = Base64.decode(contactInfo.picture, Base64.DEFAULT);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-            contactPicture.setImageBitmap(bitmap);
-        } else {
-            BitmapDrawable drawable = (BitmapDrawable) getDrawable(R.drawable.default_avatar);
-            if (drawable == null) return;
-            Bitmap bitmap = drawable.getBitmap();
-            contactPicture.setImageBitmap(bitmap);
-        }
+        contactPicture.setImageBitmap(contactInfo.getPicture(this));
 
         // Display contact information
         ArrayList<FieldInfo> arrayFields = new ArrayList<>();
@@ -218,7 +209,7 @@ public class ShowContact extends AppCompatActivity {
         listViewFields.setAdapter(adapterFields);
     }
 
-    private boolean updateDB(int id, String field, String value) {
+    private boolean updateDB(long id, String field, String value) {
         ContentValues cv = new ContentValues();
         cv.put(field, value);
         return ContactInfo.updateById(db, cv, id);

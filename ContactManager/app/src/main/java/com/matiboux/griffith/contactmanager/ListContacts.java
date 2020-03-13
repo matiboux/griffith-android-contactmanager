@@ -15,6 +15,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListContacts extends AppCompatActivity {
 
@@ -66,30 +67,9 @@ public class ListContacts extends AppCompatActivity {
     }
 
     private void reloadListContacts() {
-        // Show database entries
-        Cursor c = db.sdb.query(
-                ContactInfo.TABLE_NAME, new String[]{"*"},
-                null, null,
-                null, null, "firstname, lastname COLLATE NOCASE");
-
-        ArrayList<ContactInfo> arrayContacts = new ArrayList<>();
-
-        c.moveToFirst();
-        for (int i = 0; i < c.getCount(); i++) {
-            arrayContacts.add(new ContactInfo(
-                    c.getInt(0),
-                    c.getString(1),
-                    c.getString(2),
-                    c.getString(3),
-                    c.getString(4),
-                    c.getString(5)));
-            c.moveToNext();
-        }
-
+        List<ContactInfo> arrayContacts = ContactInfo.getAll(db);
         ListContactsAdapter adapterContacts = new ListContactsAdapter(this, arrayContacts);
         listViewContacts.setAdapter(adapterContacts);
-
-        c.close();
     }
 
     @Override
