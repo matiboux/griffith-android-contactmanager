@@ -13,6 +13,7 @@ import android.os.Bundle;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -48,12 +49,18 @@ public class ShowContact extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_contact);
 
+        // Database
+        db = new DBOpenHelper(this, ContactInfo.DB_NAME, null, 1);
+
         // Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Database
-        db = new DBOpenHelper(this, ContactInfo.DB_NAME, null, 1);
+        // Action Bar
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         // Components
         toolbarLayout = findViewById(R.id.toolbar_layout);
@@ -129,6 +136,11 @@ public class ShowContact extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         switch (id) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                super.onBackPressed();
+                return true;
+
             case R.id.action_edit:
                 // Edit contact
                 Intent intent = new Intent(this, AddContact.class);
@@ -185,14 +197,13 @@ public class ShowContact extends AppCompatActivity {
         toolbarLayout.setTitle(contactInfo.getFullName());
 
         // Set contact picture
-        if(contactInfo.picture != null) {
+        if (contactInfo.picture != null) {
             byte[] bytes = Base64.decode(contactInfo.picture, Base64.DEFAULT);
             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             contactPicture.setImageBitmap(bitmap);
-        }
-        else {
+        } else {
             BitmapDrawable drawable = (BitmapDrawable) getDrawable(R.drawable.default_avatar);
-            if(drawable == null) return;
+            if (drawable == null) return;
             Bitmap bitmap = drawable.getBitmap();
             contactPicture.setImageBitmap(bitmap);
         }

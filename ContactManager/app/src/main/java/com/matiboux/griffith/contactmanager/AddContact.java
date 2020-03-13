@@ -70,7 +70,7 @@ public class AddContact extends AppCompatActivity {
             actionBarTitle = getString(R.string.edit_contact_title) + ": " + contactInfo.getFullName();
 
             // Set contact picture
-            if(contactInfo.picture != null) {
+            if (contactInfo.picture != null) {
                 byte[] bytes = Base64.decode(contactInfo.picture, Base64.DEFAULT);
                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 inputPicture.setImageBitmap(bitmap);
@@ -112,7 +112,7 @@ public class AddContact extends AppCompatActivity {
             public void onClick(View v) {
                 // Reset to default avatar
                 BitmapDrawable drawable = (BitmapDrawable) getDrawable(R.drawable.default_avatar);
-                if(drawable == null) return;
+                if (drawable == null) return;
                 Bitmap bitmap = drawable.getBitmap();
                 inputPicture.setImageBitmap(bitmap);
                 inputPictureDefault = true;
@@ -141,7 +141,7 @@ public class AddContact extends AppCompatActivity {
                 super.onBackPressed();
                 return true;
 
-                // Submit
+            // Submit
             case R.id.action_submit:
                 actionSubmit();
                 return true;
@@ -177,7 +177,7 @@ public class AddContact extends AppCompatActivity {
     private void actionSubmit() {
         // Get the contact information
         String firstname = inputFirstname.getText().toString().replaceAll("\\s+", " ").trim();
-        if(TextUtils.isEmpty(firstname)) {
+        if (TextUtils.isEmpty(firstname)) {
             Toast.makeText(this, "The first name must not be empty", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -187,8 +187,7 @@ public class AddContact extends AppCompatActivity {
 
         // Get the contact picture
         String picture = null;
-        if(!inputPictureDefault)
-        {
+        if (!inputPictureDefault) {
             BitmapDrawable drawable = (BitmapDrawable) inputPicture.getDrawable();
             Bitmap bitmap = drawable.getBitmap();
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
