@@ -13,6 +13,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -163,6 +164,16 @@ public class AddContact extends AppCompatActivity {
     }
 
     private void actionSubmit() {
+        // Get the contact information
+        String firstname = inputFirstname.getText().toString().replaceAll("\\s+", " ");
+        if(TextUtils.isEmpty(firstname)) {
+            Toast.makeText(this, "The first name must not be empty", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String lastname = inputLastname.getText().toString().replaceAll("\\s+", " ");
+        String phone = inputPhone.getText().toString().replaceAll("\\s+", " ");
+        String email = inputEmail.getText().toString().replaceAll("\\s+", " ");
+
         // Get the contact picture
         String picture = null;
         if(!inputPictureDefault)
@@ -174,12 +185,6 @@ public class AddContact extends AppCompatActivity {
             byte[] byteArray = byteArrayOutputStream.toByteArray();
             picture = Base64.encodeToString(byteArray, Base64.DEFAULT);
         }
-
-        // Get the contact information
-        String firstname = inputFirstname.getText().toString();
-        String lastname = inputLastname.getText().toString();
-        String phone = inputPhone.getText().toString();
-        String email = inputEmail.getText().toString();
 
         if (contactInfo != null) {
             if (updateDB(contactInfo.id, lastname, firstname, phone, email, picture)) {
@@ -196,7 +201,7 @@ public class AddContact extends AppCompatActivity {
         }
 
         // Else,
-        Toast.makeText(AddContact.this, "An error occurred", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "An error occurred", Toast.LENGTH_SHORT).show();
     }
 
     private boolean insertDB(String lastname, String firstname, String phone, String email, String picture) {

@@ -91,7 +91,8 @@ public class ShowContact extends AppCompatActivity {
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int whichButton) {
                                         Toast toast = Toast.makeText(ShowContact.this, null, Toast.LENGTH_SHORT);
-                                        if (updateDB(contactInfo.id, fieldInfo.field, input.getText().toString())) {
+                                        String newvalue = input.getText().toString().replaceAll("\\s+", " ");
+                                        if (updateDB(contactInfo.id, fieldInfo.field, newvalue)) {
                                             toast.setText("Field successfully updated.");
                                             setResult(RESULT_OK);
                                             reloadContactInfo();
