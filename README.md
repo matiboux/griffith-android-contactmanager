@@ -5,7 +5,8 @@ First project assignment for the **Mobile Development** module at **Griffith Col
 
 ## Documentation
 
-_Not yet available._
+Available at [opensource.matiboux.com/griffith-android-contactmanager](https://opensource.matiboux.com/griffith-android-contactmanager)
+Also available for download: [Documentation.pdf](Documentation.pdf)
 
 
 ## Milestones
@@ -35,15 +36,15 @@ _Not yet available._
   the feature as well as the challenge involved in implementing it will be taken into account. Use your
   accompanying documentation to motivate and provide details of the feature. Include diagrams and
   screenshots where appropriate.
-  - [ ] Implemented [...]
+  - [x] Implemented support for **contact picture**
 
 ### Documentation Milestones (30%)
 
-- Document why you designed the UI the way you did. Include adequate graphics such as
-  wireframe diagrams and screenshots. Detail the key choices taken in application navigation, widget
-  layout and position and how they support user interaction. Don’t include instructions on how to
-  operate the App or the UI. (15%)
-- Give a high level description of all methods in your Java code including the data-structures used. (30%)
+- [x] Document why you designed the UI the way you did. Include adequate graphics such as
+      wireframe diagrams and screenshots. Detail the key choices taken in application navigation, widget
+      layout and position and how they support user interaction. Don’t include instructions on how to
+      operate the App or the UI. (15%)
+- [x] Give a high level description of all methods in your Java code including the data-structures used. (30%)
 
 
 ## Authors

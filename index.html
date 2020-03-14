@@ -1,0 +1,428 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Documentation</title>
+	<link rel="stylesheet" href="https://stackedit.io/style.css" />
+	<style>
+	body { font-family: Roboto; }
+	p { margin-top: 0 }
+	.page-break { page-break-before: always; }
+	pre > code { white-space: pre-wrap }
+	li { page-break-inside: avoid; }
+	</style>
+</head>
+
+<body class="stackedit">
+	<div class="stackedit__html">
+
+<h1 id="contact-manager-documentation">ContactManager Documentation</h1>
+<p>This is a project assignment for the <em>Mobile Development</em> module.<br>
+The application was made by <strong>Mathieu GUÉRIN</strong> (3026954).</p>
+
+<h2>Table of contents</h2>
+
+<ul>
+	<li><a href="#the-application">The application</a></li>
+	<li><a href="#the-user-interface">The User Interface</a>
+		<ul>
+			<li><a href="#list-of-contacts-listcontacts">List of contacts (ListContacts)</a></li>
+			<li><a href="#adding-a-contact-addcontact">Adding a contact (AddContact)</a></li>
+			<li><a href="#detailed-contact-view-showcontact">Detailed contact view (ShowContact)</a></li>
+			<li><a href="#about-page-about">About page (About)</a></li>
+		</ul>
+	</li>
+	<li><a href="#code-documentation">Code documentation</a>
+		<ul>
+			<li><a href="#activity-classes">Activity Classes</a></li>
+			<li><a href="#adapters">Adapters</a></li>
+			<li><a href="#structures">Structures</a></li>
+			<li><a href="#helper-classes">Helper Classes</a></li>
+		</ul>
+	</li>
+</ul>
+
+<div class="page-break"></div>
+<h2 id="the-application">The application</h2>
+<p>The application meets the subject specifications.<br>
+It has activities and features for:</p>
+<ul>
+<li>Displaying the list of contacts</li>
+<li>Displaying information on a single contact</li>
+<li>Adding, editing and deleting a contact</li>
+<li>Displaying a simple <em>About</em> page</li>
+</ul>
+<p>In total, the application uses four activities for these. It also uses a modified <code>DBOpenHelper</code> as an handler for using <code>SQLite</code>, as well as a <code>ContactInfo</code> class for managing the data in the database.</p>
+<p>The subject specifications require implementing one additional feature and I’ve chosen to support <strong>contact pictures</strong>.</p>
+
+
+<div class="page-break"></div>
+<h2 id="the-user-interface">The User Interface</h2>
+<!--&#10;&gt; Document why you designed the UI the way you did.&#10;&gt; Include adequate graphics such as wireframe diagrams and screenshots.&#10;&gt; Detail the key choices taken in application navigation, widget layout and position and how they support user interaction.&#10;&gt; Don&#8217;t include instructions on how to operate the App or the UI. (15%)&#10;-->
+<p>When opened, the application shows the list of contacts.</p>
+<h3 id="list-of-contacts-listcontacts">List of contacts (ListContacts)</h3>
+<div style="display: flex; align-items: flex-start">
+	<img src="./images/listcontacts.jpg" style="max-width: 30%; margin-right: 1em" />
+	<div>
+		<p>Contacts are sorted by first name then last name in the list. The layout for this activity is mainly a <code>ListView</code>, using a custom Adapter in order to show each contact with their picture and full name.<br>
+		Clicking a row in the <code>ListView</code> will take the user to another activity with more details about the selected contact.</p>
+		<p>The toolbar of this activity has a menu with two items:</p>
+		<ul>
+		<li>One takes the user to the form for adding a contact</li>
+		<li>The other takes them to the <em>About</em> page.</li>
+		</ul>
+		<p>Lastly, the layout includes a floating button at the bottom of the screen, which also takes the user to the form for adding a contact.</p>
+	</div>
+</div>
+<h3 id="adding-a-contact-addcontact">Adding a contact (AddContact)</h3>
+<div style="display: flex; align-items: flex-start">
+	<img src="./images/editcontact.jpg" style="max-width: 30%; margin-right: 1em" />
+	<div>
+		<p>The form for adding a contact shows four text fields, for saving:</p>
+		<ul>
+		<li>The first name</li>
+		<li>The last name</li>
+		<li>A phone number</li>
+		<li>An email address</li>
+		</ul>
+		<p>There is a button below the form to submit it, as well as a submit icon in the activity toolbar. The toolbar also includes a “back” icon to go back to the previous activity.</p>
+		<p>Additionally, an <code>ImageView</code> is present, which, when clicked, ask the user for a picture to save in the contact information. A button is there to delete the picture and fall back to the default one.</p>
+		<p>Finally, this activity also serves the purpose of editing a contact. This is triggered from the detailed view of a contact when the user chooses to edit it. The form is then filled with the current contact information, and the text in the submit button is updated to reflect the new behavior of the form.</p>
+	</div>
+</div>
+<h3 id="detailed-contact-view-showcontact">Detailed contact view (ShowContact)</h3>
+<div style="display: flex; align-items: flex-start">
+	<div style="max-width: 30%; margin-right: 1em">
+		<img src="./images/showcontact.jpg" />
+		<img src="./images/deletecontact.jpg" />
+	</div>
+	<div>
+		<p>The contact information is displayed in a nested scroll view as a <code>ListView</code>, in which each field has its row. The contact full name and picture are shown in the collapsing toolbar at the top of the screen. The user can scroll down to bring up the fields, shrink the toolbar and make the picture fade out.</p>
+		<p>The toolbar includes a “back” icon to go back to the previous activity, as well as a menu with two items:</p>
+		<ul>
+		<li>One for editing the contact</li>
+		<li>The other for deleting it.</li>
+		</ul>
+		<p>The layout also includes a floating button between the toolbar and the list of fields, which is only visible when the toolbar is not collapsed and will take the user to the form for editing the contact when clicked.</p>
+		<p>Additionally, a single field can be quickly edited from the list of fields itself by clicking the row of the field the user wish to edit.</p>
+		<p>Finally, the action of deleting the contact from the menu will open a confirmation prompt (using an <code>AlertDialog</code>). The action can then be confirmed or canceled.</p>
+	</div>
+</div>
+<h3 id="about-page-about">About page (About)</h3>
+<p>The <em>About</em> page is just a simple page, to name the developer, me, and to specify the nature of this project: an assignment at Griffith College, for the <em>Mobile Development</em> module.</p>
+
+
+<div class="page-break"></div>
+<h2 id="code-documentation">Code documentation</h2>
+<!--&#10;&gt; Give a high level description of all methods in your Java code including the data-structures used. (30%)&#10;-->
+<h3 id="activity-classes">Activity Classes</h3>
+<h4 id="listcontacts">ListContacts</h4>
+<ul>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">onCreate</span><span class="token punctuation">(</span>Bundle savedInstanceState<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">setListeners</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p><em>Called from <code>onCreate()</code>.</em><br>
+Sets event listeners for: adding a contact, opening details on a contact.</p>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">onCreateOptionsMenu</span><span class="token punctuation">(</span>Menu menu<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">onOptionsItemSelected</span><span class="token punctuation">(</span>MenuItem item<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Handles toolbar menu events for: adding a contact, opening the <em>About</em> page.</p>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">onActivityResult</span><span class="token punctuation">(</span><span class="token keyword">int</span> requestCode<span class="token punctuation">,</span> <span class="token keyword">int</span> resultCode<span class="token punctuation">,</span> Intent data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Handles results from other activities, triggers <code>reloadData()</code> if necessary.</p>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">reloadData</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+<p>Reloads the list of contacts.</p>
+</li>
+</ul>
+<h4 id="showcontact">ShowContact</h4>
+<ul>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">onCreate</span><span class="token punctuation">(</span>Bundle savedInstanceState<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">setListeners</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p><em>Called from <code>onCreate()</code>.</em><br>
+Sets event listeners for: editing the contact, quick-editing a field.</p>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">onCreateOptionsMenu</span><span class="token punctuation">(</span>Menu menu<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">onOptionsItemSelected</span><span class="token punctuation">(</span>MenuItem item<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Handles toolbar menu events for: leaving the activity, editing the contact, deleting the contact.</p>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">onActivityResult</span><span class="token punctuation">(</span><span class="token keyword">int</span> requestCode<span class="token punctuation">,</span> <span class="token keyword">int</span> resultCode<span class="token punctuation">,</span> Intent data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Handles results from other activities, triggers <code>reloadData()</code> if necessary.</p>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">reloadData</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+<p>Reloads the list of contacts.</p>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">private</span> <span class="token keyword">boolean</span> <span class="token function">updateDB</span><span class="token punctuation">(</span><span class="token keyword">int</span> id<span class="token punctuation">,</span> String field<span class="token punctuation">,</span> String value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Updates a single field about a contact.<br>
+<em>Uses <code>ContactInfo.updateById()</code>.</em></p>
+</li>
+</ul>
+<h4 id="addcontact">AddContact</h4>
+<ul>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">onCreate</span><span class="token punctuation">(</span>Bundle savedInstanceState<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">setListeners</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p><em>Called from <code>onCreate()</code>.</em><br>
+Sets event listeners for: choosing a picture, resetting the picture, submitting the form.</p>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">onCreateOptionsMenu</span><span class="token punctuation">(</span>Menu menu<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">onOptionsItemSelected</span><span class="token punctuation">(</span>MenuItem item<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Handles toolbar menu events for: leaving the activity, submitting the form.</p>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">onActivityResult</span><span class="token punctuation">(</span><span class="token keyword">int</span> requestCode<span class="token punctuation">,</span> <span class="token keyword">int</span> resultCode<span class="token punctuation">,</span> Intent data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Handles results from picking a contact picture. Updates the form accordingly.</p>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">actionSubmit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Handles the form submission.</p>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">private</span> <span class="token keyword">boolean</span> <span class="token function">insertContact</span><span class="token punctuation">(</span>String lastname<span class="token punctuation">,</span> String firstname<span class="token punctuation">,</span> String phone<span class="token punctuation">,</span> String email<span class="token punctuation">,</span> Bitmap picture<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Adds a new contact in the database.<br>
+<em>Uses <code>ContactInfo.insert()</code>.</em></p>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">private</span> <span class="token keyword">boolean</span> <span class="token function">updateContact</span><span class="token punctuation">(</span><span class="token keyword">long</span> id<span class="token punctuation">,</span> String lastname<span class="token punctuation">,</span> String firstname<span class="token punctuation">,</span> String phone<span class="token punctuation">,</span> String email<span class="token punctuation">,</span> Bitmap picture<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Updates an existing contact in the database.<br>
+<em>Uses <code>ContactInfo.updateById()</code>.</em></p>
+</li>
+</ul>
+<h4 id="about">About</h4>
+<ul>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">onCreate</span><span class="token punctuation">(</span>Bundle savedInstanceState<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">onOptionsItemSelected</span><span class="token punctuation">(</span>MenuItem item<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Handles toolbar menu events for: leaving the activity.</p>
+</li>
+</ul>
+<h3 id="adapters">Adapters</h3>
+<h4 id="listcontactsadapter">ListContactsAdapter</h4>
+<ul>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">public</span> <span class="token function">ListContactsAdapter</span><span class="token punctuation">(</span>Context context<span class="token punctuation">,</span> List<span class="token operator">&lt;</span>ContactInfo<span class="token operator">&gt;</span> objects<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p><em>Constructor of the class.</em><br>
+It defines <code>objects</code>, the list of elements that will be in the <code>ListView</code>.</p>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">public</span> View <span class="token function">getView</span><span class="token punctuation">(</span><span class="token keyword">int</span> position<span class="token punctuation">,</span> View convertView<span class="token punctuation">,</span> ViewGroup parent<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Method that will construct each row of the <code>ListView</code>.<br>
+<em>Uses <code>ViewHolder</code>.</em></p>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">ViewHolder</span> <span class="token punctuation">{</span>
+	ImageView contact_picture<span class="token punctuation">;</span>
+	TextView txv_list_contacts<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Structure element for a single row in the <code>ListView</code>.</p>
+</li>
+</ul>
+<h4 id="showcontactsadapter">ShowContactsAdapter</h4>
+<ul>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">public</span> <span class="token function">ShowContactAdapter</span><span class="token punctuation">(</span>Context context<span class="token punctuation">,</span> List<span class="token operator">&lt;</span>FieldInfo<span class="token operator">&gt;</span> objects<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p><em>Constructor of the class.</em><br>
+It defines <code>objects</code>, the list of elements that will be in the <code>ListView</code>.</p>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">public</span> View <span class="token function">getView</span><span class="token punctuation">(</span><span class="token keyword">int</span> position<span class="token punctuation">,</span> View convertView<span class="token punctuation">,</span> ViewGroup parent<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Method that will construct each row of the <code>ListView</code>.<br>
+<em>Uses <code>ViewHolder</code>.</em></p>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">ViewHolder</span> <span class="token punctuation">{</span>
+	TextView txv_field_name<span class="token punctuation">;</span>
+	TextView txv_field_value<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Structure element for a single row in the <code>ListView</code>.</p>
+</li>
+</ul>
+<h3 id="structures">Structures</h3>
+<h4 id="contactinfo">ContactInfo</h4>
+<p>Structure class for a contact: stores information and implement a method to get the contact picture.<br>
+Also provides a range of static methods to get, update or delete contacts.</p>
+<ul>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">public</span> <span class="token keyword">final</span> <span class="token keyword">long</span> id<span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">final</span> String lastname<span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">final</span> String firstname<span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">final</span> String phone<span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">final</span> String email<span class="token punctuation">;</span>
+</code></pre>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">private</span> Bitmap picture<span class="token punctuation">;</span>
+</code></pre>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">public</span> <span class="token function">ContactInfo</span><span class="token punctuation">(</span><span class="token keyword">long</span> id<span class="token punctuation">,</span> String lastname<span class="token punctuation">,</span> String firstname<span class="token punctuation">,</span> String phone<span class="token punctuation">,</span> String email<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p><em>Constructor of the class.</em>	It sets the <code>sdb</code> field for use.</p>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">public</span> String <span class="token function">getFullName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Returns the contact full name.</p>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">public</span> Bitmap <span class="token function">getPicture</span><span class="token punctuation">(</span>Context context<span class="token punctuation">,</span> <span class="token keyword">boolean</span> fallbackDefault<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Fetch the contact picture if necessary, and returns it.<br>
+If the picture cannot be found and <code>fallbackDefault</code> is true, the default contact picture will be returned. Otherwise, null is returned.</p>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">final</span> String DB_NAME<span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">final</span> String TABLE_NAME<span class="token punctuation">;</span>
+</code></pre>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">final</span> String CREATE_TABLE<span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">final</span> String DROP_TABLE<span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">final</span> String UPGRADE_TABLE<span class="token punctuation">;</span>
+</code></pre>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> String <span class="token function">getFieldById</span><span class="token punctuation">(</span>DBOpenHelper db<span class="token punctuation">,</span> String column<span class="token punctuation">,</span> <span class="token keyword">long</span> id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Returns a single field about a contact.</p>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> ContactInfo <span class="token function">getById</span><span class="token punctuation">(</span>DBOpenHelper db<span class="token punctuation">,</span> <span class="token keyword">long</span> id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Returns a <code>ContactInfo</code> object containing information about a contact.</p>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> List<span class="token operator">&lt;</span>ContactInfo<span class="token operator">&gt;</span> <span class="token function">getAll</span><span class="token punctuation">(</span>DBOpenHelper db<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Returns a list of all contacts in the database, as <code>ContactInfo</code> objects.</p>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">boolean</span> <span class="token function">insert</span><span class="token punctuation">(</span>DBOpenHelper db<span class="token punctuation">,</span> ContentValues cv<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Adds a new contact in the database. <code>cv</code> defines the field values.</p>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">boolean</span> <span class="token function">updateById</span><span class="token punctuation">(</span>DBOpenHelper db<span class="token punctuation">,</span> ContentValues cv<span class="token punctuation">,</span> <span class="token keyword">long</span> id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Updates an existing contact in the database. <code>cv</code> defines the new field values.</p>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">boolean</span> <span class="token function">deleteById</span><span class="token punctuation">(</span>DBOpenHelper db<span class="token punctuation">,</span> <span class="token keyword">long</span> id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Deletes a contact from the database.</p>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> Bitmap <span class="token function">getDefaultPicture</span><span class="token punctuation">(</span>Context context<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Returns the default picture for a contact.</p>
+</li>
+</ul>
+<h4 id="fieldinfo">FieldInfo</h4>
+<p>Simple structure class for use in <code>ShowContactsAdapter</code>.</p>
+<ul>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">public</span> <span class="token keyword">final</span> String field<span class="token punctuation">;</span>	
+<span class="token keyword">public</span> <span class="token keyword">final</span> String name<span class="token punctuation">;</span>	
+<span class="token keyword">public</span> <span class="token keyword">final</span> String value<span class="token punctuation">;</span>
+</code></pre>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">public</span> <span class="token function">FieldInfo</span><span class="token punctuation">(</span>String field<span class="token punctuation">,</span> String name<span class="token punctuation">,</span> String value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p><em>Constructor of the class.</em> It initializes the fields.</p>
+</li>
+</ul>
+<h3 id="helper-classes">Helper Classes</h3>
+<h4 id="dbopenhelper">DBOpenHelper</h4>
+<p>This class is only used to connect to a database.<br>
+SQL queries are handled outside of this class: mainly in <code>ContactInfo</code>.</p>
+<ul>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">public</span> <span class="token keyword">final</span> SQLiteDatabase sdb<span class="token punctuation">;</span>
+</code></pre>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">public</span> <span class="token function">DBOpenHelper</span><span class="token punctuation">(</span>Context context<span class="token punctuation">,</span> String name<span class="token punctuation">,</span> SQLiteDatabase<span class="token punctuation">.</span>CursorFactory factory<span class="token punctuation">,</span> <span class="token keyword">int</span> version<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p><em>Constructor of the class.</em> It sets the <code>sdb</code> field for use.</p>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onCreate</span><span class="token punctuation">(</span>SQLiteDatabase sdb<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onUpgrade</span><span class="token punctuation">(</span>SQLiteDatabase sdb<span class="token punctuation">,</span> <span class="token keyword">int</span> oldVersion<span class="token punctuation">,</span> <span class="token keyword">int</span> newVersion<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+</li>
+</ul>
+<h4 id="bitmaphelper">BitmapHelper</h4>
+<p>This class is used to encode and decode Bitmap in base64.<br>
+This is part of the additional feature implementation.</p>
+<ul>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> String <span class="token function">encodeBitmap</span><span class="token punctuation">(</span>Bitmap bitmap<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+</li>
+<li>
+<pre class=" language-java"><code class="prism	language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> Bitmap <span class="token function">decodeBitmap</span><span class="token punctuation">(</span>String encoded<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+</li>
+</ul>
+</div>
+</body>
+
+</html>
