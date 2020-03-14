@@ -8,6 +8,8 @@ import java.io.ByteArrayOutputStream;
 
 public class BitmapHelper {
     public static String encodeBitmap(Bitmap bitmap) {
+        if(bitmap == null) return null;
+
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream.toByteArray();
