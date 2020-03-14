@@ -88,7 +88,7 @@ public class ShowContact extends AppCompatActivity {
                 final FieldInfo fieldInfo = (FieldInfo) parent.getItemAtPosition(position);
 
                 final EditText input = new EditText(ShowContact.this);
-                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
                 input.setText(fieldInfo.value);
 
                 new AlertDialog.Builder(ShowContact.this)
