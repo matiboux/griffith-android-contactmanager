@@ -38,8 +38,6 @@ public class ListContactsAdapter extends ArrayAdapter<ContactInfo> implements Vi
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        //return super.getView(position, convertView, parent);
-
         // Get the data item for this position
         ContactInfo contactInfo = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
@@ -47,7 +45,6 @@ public class ListContactsAdapter extends ArrayAdapter<ContactInfo> implements Vi
 
         if (convertView != null) viewHolder = (ViewHolder) convertView.getTag();
         else {
-
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.adapter_list_contacts, parent, false);

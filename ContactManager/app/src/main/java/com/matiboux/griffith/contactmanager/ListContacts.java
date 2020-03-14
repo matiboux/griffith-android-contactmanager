@@ -16,7 +16,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.List;
 
 public class ListContacts extends AppCompatActivity {
-
     private static final int ASK_FOR_UPDATE = 1;
 
     private DBOpenHelper db;
@@ -29,6 +28,9 @@ public class ListContacts extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_contacts);
 
+        // Database
+        db = new DBOpenHelper(this, ContactInfo.DB_NAME, null, 1);
+
         // Action bar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -37,18 +39,18 @@ public class ListContacts extends AppCompatActivity {
         fab = findViewById(R.id.fab);
         listViewContacts = findViewById(R.id.lv_list_contacts);
 
-        // Database
-        db = new DBOpenHelper(this, ContactInfo.DB_NAME, null, 1);
+        setListeners(); // Events
+        reloadData(); // Initial load
+    }
 
-        // Events
+    private void setListeners() {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Add contact
-                startActivityForResult(new Intent(ListContacts.this, AddContact.class), 1);
+                startActivityForResult(new Intent(ListContacts.this, AddContact.class), ASK_FOR_UPDATE);
             }
         });
-
         listViewContacts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -59,15 +61,6 @@ public class ListContacts extends AppCompatActivity {
                 startActivityForResult(intent, ASK_FOR_UPDATE);
             }
         });
-
-        // Load from database
-        reloadListContacts();
-    }
-
-    private void reloadListContacts() {
-        List<ContactInfo> arrayContacts = ContactInfo.getAll(db);
-        ListContactsAdapter adapterContacts = new ListContactsAdapter(this, arrayContacts);
-        listViewContacts.setAdapter(adapterContacts);
     }
 
     @Override
@@ -87,7 +80,7 @@ public class ListContacts extends AppCompatActivity {
         switch (id) {
             case R.id.action_add_contact:
                 // Move to Add contact Activity
-                startActivityForResult(new Intent(this, AddContact.class), 1);
+                startActivityForResult(new Intent(this, AddContact.class), ASK_FOR_UPDATE);
                 return true;
 
             case R.id.action_about:
@@ -105,8 +98,14 @@ public class ListContacts extends AppCompatActivity {
         if (requestCode == ASK_FOR_UPDATE)
             // Make sure the request was successful
             if (resultCode == RESULT_OK)
-                reloadListContacts();
+                reloadData();
 
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void reloadData() {
+        List<ContactInfo> arrayContacts = ContactInfo.getAll(db);
+        ListContactsAdapter adapterContacts = new ListContactsAdapter(this, arrayContacts);
+        listViewContacts.setAdapter(adapterContacts);
     }
 }

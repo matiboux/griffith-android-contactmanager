@@ -60,7 +60,8 @@ public class AddContact extends AppCompatActivity {
 
         // Set information
         String actionBarTitle;
-        if (contactInfo != null) {
+        if (contactInfo == null) actionBarTitle = getString(R.string.add_contact_title);
+        else {
             // Set title
             actionBarTitle = getString(R.string.edit_contact_title) + ": " + contactInfo.getFullName();
 
@@ -77,7 +78,7 @@ public class AddContact extends AppCompatActivity {
             inputPhone.setText(contactInfo.phone);
             inputEmail.setText(contactInfo.email);
             btnSubmit.setText(R.string.edit_contact_submit_button);
-        } else actionBarTitle = getString(R.string.add_contact_title);
+        }
 
         // Action Bar attributes
         if (actionBar != null) {
@@ -85,7 +86,10 @@ public class AddContact extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        // Events
+        setListeners(); // Events
+    }
+
+    private void setListeners() {
         inputPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

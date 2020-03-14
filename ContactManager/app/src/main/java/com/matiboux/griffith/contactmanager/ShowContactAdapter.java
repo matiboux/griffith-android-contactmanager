@@ -5,8 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -41,14 +39,12 @@ public class ShowContactAdapter extends ArrayAdapter<FieldInfo> implements View.
         //return super.getView(position, convertView, parent);
 
         // Get the data item for this position
-        FieldInfo dataModel = getItem(position);
+        FieldInfo fieldInfo = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
 
-        //final View result;
-
-        if (convertView == null) {
-
+        if (convertView != null) viewHolder = (ViewHolder) convertView.getTag();
+        else {
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.adapter_show_contact, parent, false);
@@ -56,21 +52,14 @@ public class ShowContactAdapter extends ArrayAdapter<FieldInfo> implements View.
             viewHolder.txv_field_name = convertView.findViewById(R.id.txv_field_name);
             viewHolder.txv_field_value = convertView.findViewById(R.id.txv_field_value);
 
-            //result = convertView;
             convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
-            //result = convertView;
         }
 
-        /*
-        Animation animation = AnimationUtils.loadAnimation(mContext, (position > lastPosition) ? R.anim.up_from_bottom : R.anim.down_from_top);
-        result.startAnimation(animation);
-        lastPosition = position;
-        */
+        if (fieldInfo != null) {
+            viewHolder.txv_field_name.setText(fieldInfo.name);
+            viewHolder.txv_field_value.setText(fieldInfo.value);
+        }
 
-        viewHolder.txv_field_name.setText(dataModel.name);
-        viewHolder.txv_field_value.setText(dataModel.value);
         // Return the completed view to render on screen
         return convertView;
     }

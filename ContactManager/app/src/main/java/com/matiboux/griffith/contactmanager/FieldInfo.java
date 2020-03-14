@@ -1,9 +1,9 @@
 package com.matiboux.griffith.contactmanager;
 
 public class FieldInfo {
-    String field;
-    String name;
-    String value;
+    public final String field;
+    public final String name;
+    public final String value;
 
     public FieldInfo(String field, String name, String value) {
         this.field = field;

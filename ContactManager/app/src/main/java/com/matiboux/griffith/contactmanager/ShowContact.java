@@ -26,6 +26,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 
 public class ShowContact extends AppCompatActivity {
+    private static final int ASK_FOR_UPDATE = 1;
 
     private DBOpenHelper db;
 
@@ -34,6 +35,7 @@ public class ShowContact extends AppCompatActivity {
 
     private CollapsingToolbarLayout toolbarLayout;
     private ImageView contactPicture;
+    private FloatingActionButton fab;
     private ListView listViewFields;
 
     @Override
@@ -47,8 +49,6 @@ public class ShowContact extends AppCompatActivity {
         // Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        // Action Bar
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -57,26 +57,29 @@ public class ShowContact extends AppCompatActivity {
         // Components
         toolbarLayout = findViewById(R.id.toolbar_layout);
         contactPicture = findViewById(R.id.contact_picture);
+        fab = findViewById(R.id.fab);
         listViewFields = findViewById(R.id.lv_info_contact);
 
         // Get contact id
         contactId = getIntent().getLongExtra("contactId", -1);
-        reloadContactInfo();
 
-        // Set max picture height
+        // Set picture max height
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         contactPicture.setMaxHeight(Math.min(displayMetrics.widthPixels, displayMetrics.heightPixels));
 
-        // Events
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        setListeners(); // Events
+        reloadContactInfo(); // Initial load
+    }
+
+    private void setListeners() {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Edit contact
                 Intent intent = new Intent(ShowContact.this, AddContact.class);
                 intent.putExtra("contactId", contactInfo.id);
-                startActivityForResult(intent, 1);
+                startActivityForResult(intent, ASK_FOR_UPDATE);
             }
         });
         listViewFields.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -136,7 +139,7 @@ public class ShowContact extends AppCompatActivity {
                 // Edit contact
                 Intent intent = new Intent(this, AddContact.class);
                 intent.putExtra("contactId", contactInfo.id);
-                startActivityForResult(intent, 1);
+                startActivityForResult(intent, ASK_FOR_UPDATE);
                 return true;
 
             case R.id.action_delete:
@@ -170,7 +173,7 @@ public class ShowContact extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
-        if (requestCode == 1)
+        if (requestCode == ASK_FOR_UPDATE)
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
                 setResult(RESULT_OK);
