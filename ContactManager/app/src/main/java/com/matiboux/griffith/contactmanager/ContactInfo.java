@@ -143,7 +143,7 @@ public class ContactInfo {
             "lastname string, " +
             "firstname string, " +
             "phone string, " +
-            "email string" +
+            "email string, " +
             "picture string)";
     public static final String DROP_TABLE = "drop table " + TABLE_NAME;
     public static final String UPGRADE_TABLE = "alter table " + TABLE_NAME + " add column picture string";
