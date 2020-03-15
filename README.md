@@ -4,7 +4,7 @@ First project assignment for the **Mobile Development** module at **Griffith Col
 
 Open-source repository: https://github.com/matiboux/griffith-android-contactmanager (public since March 16, 2020).
 
-Play Store page: _Pending review_.
+Play Store page: [ContactManager](https://play.google.com/store/apps/details?id=com.matiboux.griffith.contactmanager).
 
 Alternatively, see the [latest release](https://github.com/matiboux/griffith-android-contactmanager/releases/latest) for downloading the APK.
 
