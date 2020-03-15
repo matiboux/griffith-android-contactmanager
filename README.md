@@ -2,10 +2,17 @@
 
 First project assignment for the **Mobile Development** module at **Griffith College**.
 
+Open-source repository: https://github.com/matiboux/griffith-android-contactmanager (public since March 16, 2020).
+
+Play Store page: _Pending review_.
+
+Alternatively, see the [latest release](https://github.com/matiboux/griffith-android-contactmanager/releases/latest) for downloading the APK.
+
 
 ## Documentation
 
-Available at [opensource.matiboux.com/griffith-android-contactmanager](https://opensource.matiboux.com/griffith-android-contactmanager)
+Available online at [opensource.matiboux.com/griffith-android-contactmanager](https://opensource.matiboux.com/griffith-android-contactmanager)
+
 Also available for download: [Documentation.pdf](Documentation.pdf)
 
 
