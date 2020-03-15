@@ -12,8 +12,8 @@
         android:id="@+id/txv_field_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textColor="@android:color/darker_gray" />
+        android:textColor="@android:color/darker_gray"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/txv_field_value"

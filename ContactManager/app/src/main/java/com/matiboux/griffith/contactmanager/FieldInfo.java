@@ -11,4 +11,3 @@ public class FieldInfo {
         this.value = value;
     }
 }
-;

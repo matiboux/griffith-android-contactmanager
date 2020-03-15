@@ -14,19 +14,13 @@ import java.util.List;
 
 public class ShowContactAdapter extends ArrayAdapter<FieldInfo> implements View.OnClickListener {
 
-    private List<FieldInfo> objects;
     Context context;
+    private List<FieldInfo> objects;
 
     public ShowContactAdapter(@NonNull Context context, @NonNull List<FieldInfo> objects) {
         super(context, R.layout.adapter_show_contact, objects);
         this.context = context;
         this.objects = objects;
-    }
-
-    // View lookup cache
-    private static class ViewHolder {
-        TextView txv_field_name;
-        TextView txv_field_value;
     }
 
     @Override
@@ -62,5 +56,11 @@ public class ShowContactAdapter extends ArrayAdapter<FieldInfo> implements View.
 
         // Return the completed view to render on screen
         return convertView;
+    }
+
+    // View lookup cache
+    private static class ViewHolder {
+        TextView txv_field_name;
+        TextView txv_field_value;
     }
 }

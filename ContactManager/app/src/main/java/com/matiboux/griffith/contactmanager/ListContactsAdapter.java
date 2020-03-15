@@ -16,19 +16,13 @@ import java.util.List;
 
 public class ListContactsAdapter extends ArrayAdapter<ContactInfo> implements View.OnClickListener {
 
-    private List<ContactInfo> objects;
     Context context;
+    private List<ContactInfo> objects;
 
     public ListContactsAdapter(@NonNull Context context, @NonNull List<ContactInfo> objects) {
         super(context, R.layout.adapter_list_contacts, objects);
         this.context = context;
         this.objects = objects;
-    }
-
-    // View lookup cache
-    private static class ViewHolder {
-        ImageView contact_picture;
-        TextView txv_list_contacts;
     }
 
     @Override
@@ -66,5 +60,11 @@ public class ListContactsAdapter extends ArrayAdapter<ContactInfo> implements Vi
 
         // Return the completed view to render on screen
         return convertView;
+    }
+
+    // View lookup cache
+    private static class ViewHolder {
+        ImageView contact_picture;
+        TextView txv_list_contacts;
     }
 }
